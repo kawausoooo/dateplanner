@@ -33,3 +33,7 @@ Thumbs.db
 
 # Bun cache
 .bun/
+
+# Vite/TypeScript cache
+.vite/
+*.tsbuildinfo
