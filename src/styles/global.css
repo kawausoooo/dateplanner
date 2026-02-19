@@ -1,0 +1,92 @@
+:root {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+  background: linear-gradient(135deg, #f5f3ff, #eff6ff);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 16px;
+}
+
+.nav-row,
+.button-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.card {
+  background: #ffffffd9;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+input,
+textarea,
+select,
+button {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+button {
+  cursor: pointer;
+}
+
+button.selected {
+  border: 2px solid #2563eb;
+}
+
+.radar-wrapper {
+  display: grid;
+  gap: 12px;
+}
+
+.radar-chart {
+  width: min(280px, 100%);
+  height: auto;
+}
+
+.radar-grid {
+  fill: none;
+  stroke: #9ca3af;
+}
+
+.radar-fill {
+  fill: #2563eb55;
+  stroke: #1d4ed8;
+}
+
+.radar-labels {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.history-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+}

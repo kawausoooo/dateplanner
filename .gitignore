@@ -1,7 +1,7 @@
-# dependencies
+# Dependencies
 node_modules/
 
-# logs
+# Logs
 logs/
 *.log
 npm-debug.log*
@@ -9,29 +9,31 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# build outputs
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Build output
 dist/
 build/
 coverage/
 
-# environment files
+# Environment variables
 .env
 .env.*
 !.env.example
 
-# cache
-.cache/
-.parcel-cache/
-.next/
-.nuxt/
-.svelte-kit/
-*.tsbuildinfo
-
-# bun
-.bun/
-
-# editor and OS files
+# OS/editor
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+
+# Bun cache
+.bun/
+
+# Vite/TypeScript cache
+.vite/
+*.tsbuildinfo
