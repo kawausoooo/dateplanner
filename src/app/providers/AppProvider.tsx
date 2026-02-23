@@ -9,7 +9,7 @@ import {
 } from "react";
 import type { DateEvent } from "../../entities/score";
 import type { AppSettings } from "../../entities/settings";
-import type { Person } from "../../entities/person";
+import type { Person, PersonImportance } from "../../entities/person";
 import { DEFAULT_SETTINGS } from "../../shared/config/defaults";
 import { createStorageAdapter } from "../../storage/createStorageAdapter";
 import { toIsoDate } from "../../shared/lib/date";
@@ -21,7 +21,9 @@ type AppContextValue = {
   selectedPersonId: string | null;
   settings: AppSettings;
   isLoaded: boolean;
-  addPerson: (name: string) => Promise<void>;
+  addPerson: (personInput: { icon: string; name: string; importance: PersonImportance }) => Promise<void>;
+  updatePerson: (personInput: { id: string; icon: string; name: string; importance: PersonImportance }) => Promise<void>;
+  deletePerson: (personId: string) => Promise<void>;
   selectPerson: (personId: string) => Promise<void>;
   listEvents: () => Promise<DateEvent[]>;
   addDateEvent: (event: Omit<DateEvent, "id" | "personId" | "date"> & { date?: string }) => Promise<void>;
@@ -30,6 +32,24 @@ type AppContextValue = {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
+const toImportance = (value: unknown): PersonImportance => {
+  if (value === "high" || value === "medium" || value === "low") {
+    return value;
+  }
+
+  if (typeof value === "number") {
+    if (value >= 3) {
+      return "high";
+    }
+    if (value === 2) {
+      return "medium";
+    }
+    return "low";
+  }
+
+  return "medium";
+};
+
 const loadPeople = (): Person[] => {
   const raw = localStorage.getItem(PEOPLE_KEY);
   if (!raw) {
@@ -37,7 +57,16 @@ const loadPeople = (): Person[] => {
   }
 
   try {
-    return JSON.parse(raw) as Person[];
+    const parsed = JSON.parse(raw) as Array<Partial<Person>>;
+    return parsed
+      .filter((person) => typeof person.id === "string" && typeof person.name === "string")
+      .map((person) => ({
+        id: person.id!,
+        name: person.name!,
+        icon: typeof person.icon === "string" ? person.icon : "🙂",
+        importance: toImportance((person as { importance?: unknown }).importance ?? (person as { priority?: unknown }).priority),
+        createdAt: typeof person.createdAt === "string" ? person.createdAt : new Date().toISOString(),
+      }));
   } catch {
     return [];
   }
@@ -72,15 +101,17 @@ export const AppProvider = ({ children }: PropsWithChildren): JSX.Element => {
     void bootstrap();
   }, [adapter]);
 
-  const addPerson = useCallback(async (name: string): Promise<void> => {
-    const trimmed = name.trim();
+  const addPerson = useCallback(async (personInput: { icon: string; name: string; importance: PersonImportance }): Promise<void> => {
+    const trimmed = personInput.name.trim();
     if (!trimmed) {
       return;
     }
 
     const person: Person = {
       id: crypto.randomUUID(),
+      icon: personInput.icon.trim() || "🙂",
       name: trimmed,
+      importance: personInput.importance,
       createdAt: new Date().toISOString(),
     };
 
@@ -93,6 +124,47 @@ export const AppProvider = ({ children }: PropsWithChildren): JSX.Element => {
     setSelectedPersonId(person.id);
     await adapter.saveSessionState({ selectedPersonId: person.id });
   }, [adapter]);
+
+  const updatePerson = useCallback(async (personInput: {
+    id: string;
+    icon: string;
+    name: string;
+    importance: PersonImportance;
+  }): Promise<void> => {
+    const trimmed = personInput.name.trim();
+    if (!trimmed) {
+      return;
+    }
+
+    setPersons((prev) => {
+      const next = prev.map((person) => (
+        person.id === personInput.id
+          ? {
+              ...person,
+              icon: personInput.icon.trim() || "🙂",
+              name: trimmed,
+              importance: personInput.importance,
+            }
+          : person
+      ));
+      savePeople(next);
+      return next;
+    });
+  }, []);
+
+  const deletePerson = useCallback(async (personId: string): Promise<void> => {
+    let nextSelectedPersonId: string | null = null;
+
+    setPersons((prev) => {
+      const next = prev.filter((person) => person.id !== personId);
+      nextSelectedPersonId = selectedPersonId === personId ? (next[0]?.id ?? null) : selectedPersonId;
+      savePeople(next);
+      return next;
+    });
+
+    setSelectedPersonId(nextSelectedPersonId);
+    await adapter.saveSessionState({ selectedPersonId: nextSelectedPersonId });
+  }, [adapter, selectedPersonId]);
 
   const selectPerson = useCallback(async (personId: string): Promise<void> => {
     setSelectedPersonId(personId);
@@ -135,12 +207,14 @@ export const AppProvider = ({ children }: PropsWithChildren): JSX.Element => {
       settings,
       isLoaded,
       addPerson,
+      updatePerson,
+      deletePerson,
       selectPerson,
       listEvents,
       addDateEvent,
       updateSettings,
     }),
-    [persons, selectedPersonId, settings, isLoaded, addPerson, selectPerson, listEvents, addDateEvent, updateSettings],
+    [persons, selectedPersonId, settings, isLoaded, addPerson, updatePerson, deletePerson, selectPerson, listEvents, addDateEvent, updateSettings],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
