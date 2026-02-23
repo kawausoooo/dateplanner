@@ -33,7 +33,7 @@ export const DateEntryPage = (): JSX.Element => {
       })),
     });
 
-    navigate("/");
+    navigate("/main");
   };
 
   return (

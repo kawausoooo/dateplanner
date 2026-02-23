@@ -175,10 +175,11 @@ button.selected {
 }
 
 .profile-card-icon {
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .profile-card-name {
+  font-size: 22px;
   font-weight: 600;
 }
 
@@ -189,7 +190,7 @@ button.selected {
 
 .profile-card-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 6px;
 }
 
@@ -198,6 +199,19 @@ button.selected {
   max-width: none;
   margin: 0;
   padding: 4px 8px;
+  font-size: 13px;
+  color: #1f2937;
+  border: none;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.profile-edit-button {
+  background-color: #93c5fd;
+}
+
+.profile-delete-button {
+  background-color: #fca5a5;
 }
 
 .person-selector-footer {
@@ -209,4 +223,14 @@ button.selected {
   width: 100%;
   max-width: none;
   margin: 0;
+}
+
+.title-card {
+  text-align: center;
+}
+
+.app-logo {
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 8px;
 }

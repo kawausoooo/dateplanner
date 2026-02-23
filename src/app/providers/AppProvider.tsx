@@ -58,6 +58,7 @@ const loadPeople = (): Person[] => {
 
   try {
     const parsed = JSON.parse(raw) as Array<Partial<Person>>;
+
     return parsed
       .filter((person) => typeof person.id === "string" && typeof person.name === "string")
       .map((person) => ({
@@ -120,7 +121,6 @@ export const AppProvider = ({ children }: PropsWithChildren): JSX.Element => {
       savePeople(next);
       return next;
     });
-
     setSelectedPersonId(person.id);
     await adapter.saveSessionState({ selectedPersonId: person.id });
   }, [adapter]);

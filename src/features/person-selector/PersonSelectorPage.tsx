@@ -19,6 +19,18 @@ const importanceLabel: Record<PersonImportance, string> = {
   low: "低",
 };
 
+const importanceColor: Record<PersonImportance, string> = {
+  high: "#fb923c",
+  medium: "#a3e635",
+  low: "#7dd3fc",
+};
+
+const selectedImportanceColor: Record<PersonImportance, string> = {
+  high: "#ea580c",
+  medium: "#65a30d",
+  low: "#0284c7",
+};
+
 const sortByImportanceAndName = <T extends { importance: PersonImportance; name: string }>(items: T[]): T[] => {
   return [...items].sort((a, b) => {
     const byImportance = importanceOrder[b.importance] - importanceOrder[a.importance];
@@ -118,8 +130,8 @@ export const PersonSelectorPage = (): JSX.Element => {
         <section className="person-selector-list-area" aria-label="プロフィール一覧エリア">
           <div className="person-selector-toolbar">
             <p>プロフィール一覧（重要度順）</p>
-            <button onClick={() => navigate("/")} disabled={sortedPersons.length === 0}>
-              メインへ進む
+            <button onClick={() => navigate("/main")} disabled={sortedPersons.length === 0}>
+              メインに進む
             </button>
           </div>
 
@@ -182,46 +194,62 @@ export const PersonSelectorPage = (): JSX.Element => {
           {sortedPersons.length === 0 && <p>まずプロフィールを追加してください。</p>}
 
           <div className="person-cards">
-            {sortedPersons.map((person) => (
-              <article
-                key={person.id}
-                className={`profile-card ${selectedPersonId === person.id ? "selected" : ""}`}
-                onClick={() => void selectPerson(person.id)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    void selectPerson(person.id);
-                  }
-                }}
-                role="button"
-                tabIndex={0}
-              >
-                <span className="profile-card-icon">{person.icon}</span>
-                <span className="profile-card-name">{person.name}</span>
-                <span className="profile-card-priority">重要度: {importanceLabel[person.importance]}</span>
+            {sortedPersons.map((person) => {
+              const isSelected = selectedPersonId === person.id;
+              const cardColor = isSelected
+                ? selectedImportanceColor[person.importance]
+                : importanceColor[person.importance];
 
-                <div className="profile-card-actions">
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      openEditEditor(person.id);
-                    }}
-                  >
-                    編集
-                  </button>
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      void handleDelete(person.id);
-                    }}
-                  >
-                    削除
-                  </button>
-                </div>
-              </article>
-            ))}
+              return (
+                <article
+                  key={person.id}
+                  className={`profile-card ${isSelected ? "selected" : ""}`}
+                  style={{
+                    borderColor: cardColor,
+                    boxShadow: `inset 8px 0 0 ${cardColor}`,
+                    background: `${cardColor}${isSelected ? "4d" : "26"}`,
+                    outline: isSelected ? `2px solid ${cardColor}` : "none",
+                    transform: isSelected ? "translateY(-1px)" : "none",
+                  }}
+                  onClick={() => void selectPerson(person.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      void selectPerson(person.id);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <span className="profile-card-icon">{person.icon}</span>
+                  <span className="profile-card-name">{person.name}</span>
+                  <span className="profile-card-priority">重要度: {importanceLabel[person.importance]}</span>
+
+                  <div className="profile-card-actions">
+                    <button
+                      className="profile-edit-button"
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        openEditEditor(person.id);
+                      }}
+                    >
+                      編集
+                    </button>
+                    <button
+                      className="profile-delete-button"
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        void handleDelete(person.id);
+                      }}
+                    >
+                      削除
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
