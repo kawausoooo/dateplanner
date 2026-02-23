@@ -5,6 +5,7 @@ import type { Importance } from "../../entities/score";
 import { PageLayout } from "../../shared/ui/PageLayout";
 
 type EntryDraft = {
+  date: string;
   memo: string;
   satisfactions: Record<string, number>;
 };
@@ -15,7 +16,12 @@ const isEntryDraft = (value: unknown): value is EntryDraft => {
   }
 
   const candidate = value as Partial<EntryDraft>;
-  return typeof candidate.memo === "string" && typeof candidate.satisfactions === "object" && candidate.satisfactions !== null;
+  return (
+    typeof candidate.date === "string"
+    && typeof candidate.memo === "string"
+    && typeof candidate.satisfactions === "object"
+    && candidate.satisfactions !== null
+  );
 };
 
 export const DateImportancePage = (): JSX.Element => {
@@ -23,7 +29,8 @@ export const DateImportancePage = (): JSX.Element => {
   const location = useLocation();
   const { settings, addDateEvent } = useAppContext();
   const enabledCategories = useMemo(() => settings.categories.filter((c) => c.enabled), [settings.categories]);
-  const [importance, setImportance] = useState<number>(5);
+  // 入力中は string で保持することで、空欄や途中入力を許容する
+  const [importance, setImportance] = useState<string>("5");
 
   const draft = isEntryDraft(location.state) ? location.state : null;
 
@@ -34,10 +41,11 @@ export const DateImportancePage = (): JSX.Element => {
     }
 
     await addDateEvent({
+      date: draft.date,
       memo: draft.memo,
       scores: enabledCategories.map((category) => ({
         categoryId: category.id,
-        importance: Math.max(1, Math.min(10, importance)) as Importance,
+        importance: Math.max(1, Math.min(10, Number(importance) || 1)) as Importance,
         satisfaction: Math.max(1, Math.min(100, draft.satisfactions[category.id] ?? 50)),
       })),
     });
@@ -49,9 +57,9 @@ export const DateImportancePage = (): JSX.Element => {
     return (
       <PageLayout title="デート重要度入力">
         <div className="card">
-          <p>先に満足度を入力してください。</p>
+          <p>先に日付と満足度を入力してください。</p>
         </div>
-        <button onClick={() => navigate("/entry", { replace: true })}>満足度入力に戻る</button>
+        <button onClick={() => navigate("/entry", { replace: true })}>日付選択に戻る</button>
       </PageLayout>
     );
   }
@@ -59,15 +67,20 @@ export const DateImportancePage = (): JSX.Element => {
   return (
     <PageLayout title="デート重要度入力">
       <div className="card">
-        <p>このデート全体の重要度を入力してください。</p>
+        <p>選択日: {draft.date}</p>
+        <p>このデートの重要度を入力してください。</p>
         <label>
           重要度 (1-10)
           <input
             type="number"
             min={1}
             max={10}
-            value={importance}
-            onChange={(e) => setImportance(Number(e.target.value))}
+            value={importance ?? ""}
+            onChange={(e) => {
+              // 空欄は許容し、10 超は即座に上限値へ丸める
+              const raw = e.target.value;
+              setImportance(raw !== "" && Number(raw) > 10 ? "10" : raw);
+            }}
           />
         </label>
       </div>

@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PersonSelectorPage } from "../../features/person-selector/PersonSelectorPage";
 import { DashboardPage } from "../../features/dashboard/DashboardPage";
+import { DateCalendarPage } from "../../features/date-entry/DateCalendarPage";
 import { DateEntryPage } from "../../features/date-entry/DateEntryPage";
 import { DateImportancePage } from "../../features/date-entry/DateImportancePage";
 import { HistoryCalendarPage } from "../../features/history-calendar/HistoryCalendarPage";
@@ -36,6 +37,14 @@ export const AppRouter = (): JSX.Element => {
       />
       <Route
         path="/entry"
+        element={
+          <RequirePerson>
+            <DateCalendarPage />
+          </RequirePerson>
+        }
+      />
+      <Route
+        path="/entry/satisfaction"
         element={
           <RequirePerson>
             <DateEntryPage />
