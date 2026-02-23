@@ -5,10 +5,17 @@ import { calculateAggregate } from "../../shared/lib/score";
 import { PageLayout } from "../../shared/ui/PageLayout";
 import { ScoreRadar } from "../../shared/ui/ScoreRadar";
 import type { DateEvent } from "../../entities/score";
+import type { PersonImportance } from "../../entities/person";
+
+const importanceLabel: Record<PersonImportance, string> = {
+  high: "高",
+  medium: "中",
+  low: "低",
+};
 
 export const DashboardPage = (): JSX.Element => {
   const navigate = useNavigate();
-  const { settings, listEvents } = useAppContext();
+  const { settings, listEvents, persons, selectedPersonId } = useAppContext();
   const [events, setEvents] = useState<DateEvent[]>([]);
 
   useEffect(() => {
@@ -20,11 +27,22 @@ export const DashboardPage = (): JSX.Element => {
     .map((id) => settings.categories.find((category) => category.id === id))
     .filter((category): category is NonNullable<typeof category> => Boolean(category));
 
+  const selectedPerson = persons.find((person) => person.id === selectedPersonId) ?? null;
+
   const values = selectedCategories.map((category) => aggregate.byCategory[category.id] ?? 0);
   const labels = selectedCategories.map((category) => category.label);
 
   return (
     <PageLayout title="メイン画面">
+      <div className="card">
+        {selectedPerson ? (
+          <p>
+            選択中プロフィール: {selectedPerson.icon} {selectedPerson.name}（重要度: {importanceLabel[selectedPerson.importance]}）
+          </p>
+        ) : (
+          <p>選択中プロフィール: なし</p>
+        )}
+      </div>
       <div className="card">
         <p>最新の総合点: {aggregate.overall}</p>
       </div>
@@ -34,6 +52,7 @@ export const DashboardPage = (): JSX.Element => {
         <button onClick={() => navigate("/history")}>履歴カレンダー</button>
         <button onClick={() => navigate("/settings")}>設定</button>
         <button onClick={() => navigate("/help")}>ヘルプ</button>
+        <button onClick={() => navigate("/people")}>プロフィール選択</button>
       </div>
     </PageLayout>
   );

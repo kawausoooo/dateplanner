@@ -1,6 +1,34 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { localStorageAdapter } from "../adapters/local/localStorageAdapter";
 import type { AppSettings } from "../../entities/settings";
+
+beforeAll(() => {
+  if (typeof globalThis.localStorage !== "undefined") {
+    return;
+  }
+
+  const store = new Map<string, string>();
+  const storage: Storage = {
+    get length() {
+      return store.size;
+    },
+    clear: () => store.clear(),
+    getItem: (key: string) => store.get(key) ?? null,
+    key: (index: number) => Array.from(store.keys())[index] ?? null,
+    removeItem: (key: string) => {
+      store.delete(key);
+    },
+    setItem: (key: string, value: string) => {
+      store.set(key, value);
+    },
+  };
+
+  Object.defineProperty(globalThis, "localStorage", {
+    configurable: true,
+    writable: true,
+    value: storage,
+  });
+});
 
 beforeEach(() => {
   localStorage.clear();

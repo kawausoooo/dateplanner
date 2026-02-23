@@ -14,7 +14,7 @@ export const PageLayout = ({ title, children, showNav = true }: PageLayoutProps)
       </header>
       {showNav && (
         <nav className="nav-row">
-          <Link to="/">メイン</Link>
+          <Link to="/main">メイン</Link>
           <Link to="/entry">入力</Link>
           <Link to="/history">履歴</Link>
           <Link to="/settings">設定</Link>
