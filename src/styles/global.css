@@ -234,3 +234,38 @@ button.selected {
   font-weight: 700;
   margin-bottom: 8px;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation-name: fadeInUp;
+  animation-duration: 420ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.fade-in-base {
+  animation-delay: 0ms;
+}
+
+.fade-in-delay-1 {
+  animation-delay: 80ms;
+}
+
+.fade-in-delay-2 {
+  animation-delay: 140ms;
+}
+
+.fade-in-delay-3 {
+  animation-delay: 220ms;
+}

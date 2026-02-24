@@ -8,6 +8,7 @@ import { HelpPage } from "../../features/help/HelpPage";
 import { TitlePage } from "../../features/title/TitlePage";
 import { useAppContext } from "../providers/AppProvider";
 
+
 const RequirePerson = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { selectedPersonId, isLoaded } = useAppContext();
 
