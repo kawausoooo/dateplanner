@@ -126,9 +126,9 @@ export const PersonSelectorPage = (): JSX.Element => {
 
   return (
     <PageLayout title="プロフィール選択" showNav={false}>
-      <div className="person-selector-page">
-        <section className="person-selector-list-area" aria-label="プロフィール一覧エリア">
-          <div className="person-selector-toolbar">
+      <div className="person-selector-page fade-in fade-in-base">
+        <section className="person-selector-list-area fade-in fade-in-delay-1" aria-label="プロフィール一覧エリア">
+          <div className="person-selector-toolbar fade-in fade-in-delay-2">
             <p>プロフィール一覧（重要度順）</p>
             <button onClick={() => navigate("/main")} disabled={sortedPersons.length === 0}>
               メインに進む
@@ -136,7 +136,7 @@ export const PersonSelectorPage = (): JSX.Element => {
           </div>
 
           {isEditorOpen && (
-            <div className="card person-editor-card">
+            <div className="card person-editor-card fade-in fade-in-delay-2">
               <p>{editingPersonId ? "プロフィール編集" : "プロフィール追加"}</p>
 
               <label htmlFor="person-name">名前</label>
@@ -253,7 +253,7 @@ export const PersonSelectorPage = (): JSX.Element => {
           </div>
         </section>
 
-        <section className="person-selector-footer" aria-label="追加ボタンエリア">
+        <section className="person-selector-footer fade-in fade-in-delay-3" aria-label="追加ボタンエリア">
           <button type="button" onClick={openCreateEditor}>
             新しいプロフィールを追加
           </button>
