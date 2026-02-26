@@ -366,6 +366,26 @@ select {
   transition: border-color 180ms ease, box-shadow 180ms ease;
 }
 
+/* チェックボックス・ラジオはインライン表示 */
+input[type="checkbox"],
+input[type="radio"] {
+  display: inline;
+  width: auto;
+  max-width: none;
+  margin: 0 6px 0 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+label:has(input[type="checkbox"]),
+label:has(input[type="radio"]) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
 input:focus,
 textarea:focus,
 select:focus {
