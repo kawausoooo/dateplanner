@@ -4,14 +4,17 @@ import { Link } from "react-router-dom";
 interface PageLayoutProps extends PropsWithChildren {
   title: string;
   showNav?: boolean;
+  showTitle?: boolean;
 }
 
-export const PageLayout = ({ title, children, showNav = true }: PageLayoutProps): JSX.Element => {
+export const PageLayout = ({ title, children, showNav = true, showTitle = true }: PageLayoutProps): JSX.Element => {
   return (
     <main className="page">
-      <header className="page-header">
-        <h1>{title}</h1>
-      </header>
+      {showTitle && (
+        <header className="page-header">
+          <h1>{title}</h1>
+        </header>
+      )}
       {showNav && (
         <nav className="nav-row">
           <Link to="/main">メイン</Link>
