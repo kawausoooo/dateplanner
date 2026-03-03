@@ -99,11 +99,11 @@ export const ScoreRadar = ({ values, labels }: ScoreRadarProps): JSX.Element => 
         style={{ overflow: "visible" }}
       >
         <defs>
-          {/* レーダー塗りグラデーション */}
+          {/* レーダー塗りグラデーション — パステルピンク→水色 */}
           <radialGradient id="svRadarFill" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stopColor="#00d8ff" stopOpacity="0.38" />
-            <stop offset="55%"  stopColor="#4a1d90" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#030508" stopOpacity="0.08" />
+            <stop offset="0%"   stopColor="#FF9BB5" stopOpacity="0.32" />
+            <stop offset="55%"  stopColor="#6DC8E8" stopOpacity="0.20" />
+            <stop offset="100%" stopColor="#FFF8F5" stopOpacity="0.05" />
           </radialGradient>
 
           {/* ソフトグロー */}
@@ -131,8 +131,8 @@ export const ScoreRadar = ({ values, labels }: ScoreRadarProps): JSX.Element => 
             key={scale}
             points={gridPoints(scale, CX, CY, R)}
             fill="none"
-            stroke={scale === 1.0 ? "rgba(110, 130, 220, 0.55)" : "rgba(55, 75, 160, 0.32)"}
-            strokeWidth={scale === 1.0 ? 1.2 : 0.7}
+            stroke={scale === 1.0 ? "rgba(200, 170, 220, 0.55)" : "rgba(200, 170, 220, 0.28)"}
+            strokeWidth={scale === 1.0 ? 1.5 : 0.8}
           />
         ))}
 
@@ -146,7 +146,7 @@ export const ScoreRadar = ({ values, labels }: ScoreRadarProps): JSX.Element => 
               key={i}
               x1={CX} y1={CY}
               x2={ox} y2={oy}
-              stroke="rgba(55, 75, 160, 0.38)"
+              stroke="rgba(200, 170, 220, 0.35)"
               strokeWidth="0.7"
             />
           );
@@ -163,18 +163,18 @@ export const ScoreRadar = ({ values, labels }: ScoreRadarProps): JSX.Element => 
         <polygon
           points={dataPoints(displayRatios, CX, CY, R)}
           fill="none"
-          stroke="#00d8ff"
+          stroke="#FF9BB5"
           strokeWidth="1.6"
           filter="url(#svGlow)"
         />
 
-        {/* ----- 最大頂点: リップルリング ----- */}
+        {/* ----- 最大頂点: リップルリング (オレンジ) ----- */}
         {showGlow && (
           <>
             <circle
               cx={maxPt.x} cy={maxPt.y} r={9}
               fill="none"
-              stroke="#ffd700"
+              stroke="#FF9B6A"
               strokeWidth="1.5"
               opacity="0.85"
               className="sv-ripple sv-ripple-1"
@@ -182,7 +182,7 @@ export const ScoreRadar = ({ values, labels }: ScoreRadarProps): JSX.Element => 
             <circle
               cx={maxPt.x} cy={maxPt.y} r={9}
               fill="none"
-              stroke="#ffd700"
+              stroke="#FF9B6A"
               strokeWidth="1"
               opacity="0.6"
               className="sv-ripple sv-ripple-2"
@@ -200,8 +200,8 @@ export const ScoreRadar = ({ values, labels }: ScoreRadarProps): JSX.Element => 
               cx={pt.x}
               cy={pt.y}
               r={isMax ? 6 : 3.5}
-              fill={isMax ? "#ffd700" : "#00d8ff"}
-              stroke={isMax ? "rgba(255,255,255,0.6)" : "#00a8cc"}
+              fill={isMax ? "#FF9B6A" : "#6DC8E8"}
+              stroke={isMax ? "rgba(255,255,255,0.8)" : "#3AADD4"}
               strokeWidth="1"
               filter={isMax ? "url(#svStrongGlow)" : "url(#svGlow)"}
               className={isMax ? "sv-max-dot" : undefined}
@@ -222,13 +222,13 @@ export const ScoreRadar = ({ values, labels }: ScoreRadarProps): JSX.Element => 
               y={ly}
               textAnchor="middle"
               dominantBaseline="middle"
-              fill={isMax && showGlow ? "#f5c84a" : "rgba(140, 140, 200, 0.9)"}
+              fill={isMax && showGlow ? "#F07040" : "rgba(139, 122, 144, 0.9)"}
               fontSize="10"
-              fontFamily="'Cinzel', 'Hiragino Kaku Gothic ProN', serif"
+              fontFamily="'Fredoka', 'Nunito', 'Hiragino Kaku Gothic ProN', sans-serif"
               fontWeight={isMax && showGlow ? "700" : "600"}
               style={{
                 textShadow: isMax && showGlow
-                  ? "0 0 8px rgba(245, 200, 74, 0.7)"
+                  ? "0 0 8px rgba(255, 155, 106, 0.6)"
                   : undefined,
               }}
             >

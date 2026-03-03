@@ -1,44 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
 /* =====================================================
-   SHADOWVERSE DARK FANTASY THEME
+   CANDY POP PASTEL THEME
+   水色・ピンク・オレンジ基調のポップデザイン
    ===================================================== */
 
 :root {
-  /* Core palette */
-  --sv-void:        #030508;
-  --sv-deep:        #060c18;
-  --sv-card:        #090f22;
-  --sv-card-hover:  #0d1530;
+  --bg:              #FFF8F5;
+  --bg-card:         #FFFFFF;
 
-  --sv-gold-dark:   #5a3c0a;
-  --sv-gold:        #c8901e;
-  --sv-gold-mid:    #e8b040;
-  --sv-gold-bright: #f5c84a;
-  --sv-gold-glow:   rgba(245, 200, 74, 0.35);
-  --sv-gold-glow2:  rgba(245, 200, 74, 0.12);
+  --pink:            #FF9BB5;
+  --pink-light:      #FFE0EB;
+  --pink-deep:       #F5607A;
 
-  --sv-purple-deep: #1a0830;
-  --sv-purple:      #4a1d90;
-  --sv-purple-mid:  #7c3aed;
+  --blue:            #6DC8E8;
+  --blue-light:      #D0EFFF;
+  --blue-deep:       #3AADD4;
 
-  --sv-cyan:        #00d8ff;
-  --sv-cyan-dim:    rgba(0, 216, 255, 0.18);
-  --sv-cyan-glow:   rgba(0, 216, 255, 0.4);
+  --orange:          #FF9B6A;
+  --orange-light:    #FFE0CE;
+  --orange-deep:     #F07040;
 
-  --sv-red:         #c84040;
-  --sv-green:       #3cb87a;
+  --mint:            #7DE8B0;
+  --mint-light:      #C8F5DF;
 
-  --sv-text:        #dcd4f0;
-  --sv-text-mid:    #8888b8;
-  --sv-text-dim:    #404470;
-  --sv-border:      #1c2448;
-  --sv-border-gold: #6a4a12;
+  --lavender:        #C4A8F2;
+  --lavender-light:  #EDE0FF;
 
-  font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
-  line-height: 1.6;
-  color: var(--sv-text);
-  background-color: var(--sv-void);
+  --yellow:          #FFD96A;
+  --yellow-light:    #FFF3C0;
+
+  --text:            #3A2A3A;
+  --text-mid:        #8B7A90;
+  --text-dim:        #C4B4C8;
+
+  --border-soft:     rgba(255, 155, 181, 0.3);
+  --border-blue:     rgba(109, 200, 232, 0.35);
+
+  --shadow-sm:     0 2px 10px rgba(200, 140, 180, 0.12);
+  --shadow-md:     0 4px 20px rgba(200, 140, 180, 0.18);
+  --shadow-pink:   0 6px 24px rgba(255, 155, 181, 0.28);
+  --shadow-blue:   0 6px 24px rgba(109, 200, 232, 0.28);
+  --shadow-orange: 0 6px 24px rgba(255, 155, 106, 0.28);
+
+  /* Legacy aliases (ScoreRadar inline styles 互換) */
+  --sv-gold-bright: var(--orange);
+  --sv-text:        var(--text);
+  --sv-text-mid:    var(--text-mid);
+
+  font-family: 'Nunito', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  line-height: 1.65;
+  color: var(--text);
+  background-color: var(--bg);
 }
 
 * {
@@ -47,18 +60,24 @@
 
 body {
   margin: 0;
-  background-color: var(--sv-void);
+  background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 60% 40% at 15% 10%, rgba(74, 29, 144, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 85% 85%, rgba(6, 12, 40, 0.4) 0%, transparent 60%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(255, 255, 255, 0.008) 2px,
-      rgba(255, 255, 255, 0.008) 3px
-    );
+    radial-gradient(circle at 8%  12%, rgba(255, 155, 181, 0.22) 0%, transparent 38%),
+    radial-gradient(circle at 93%  8%, rgba(109, 200, 232, 0.20) 0%, transparent 38%),
+    radial-gradient(circle at 82% 78%, rgba(255, 155, 106, 0.16) 0%, transparent 38%),
+    radial-gradient(circle at 12% 82%, rgba(125, 232, 176, 0.14) 0%, transparent 38%),
+    radial-gradient(circle at 55% 45%, rgba(196, 168, 242, 0.08) 0%, transparent 45%);
   min-height: 100vh;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 155, 181, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* =====================================================
@@ -68,35 +87,25 @@ body {
 .page {
   max-width: 860px;
   margin: 0 auto;
-  padding: 24px 20px 48px;
+  padding: 28px 20px 56px;
 }
 
 .page-header {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .page-header h1 {
-  margin: 0 0 16px;
-  font-family: 'Cinzel', 'Hiragino Kaku Gothic ProN', serif;
-  font-size: 1.55rem;
+  margin: 0 0 18px;
+  font-family: 'Fredoka', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 1.85rem;
   font-weight: 700;
-  color: var(--sv-gold-bright);
-  text-shadow: 0 0 18px var(--sv-gold-glow), 0 0 40px rgba(245, 200, 74, 0.12);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.03em;
+  background: linear-gradient(130deg, var(--pink-deep) 0%, var(--orange) 55%, var(--blue-deep) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   padding-bottom: 14px;
-  border-bottom: 1px solid var(--sv-border-gold);
-  position: relative;
-}
-
-.page-header h1::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(90deg, var(--sv-gold-bright), transparent);
-  box-shadow: 0 0 8px var(--sv-gold-glow);
+  border-bottom: 3px dashed var(--pink-light);
 }
 
 /* =====================================================
@@ -105,13 +114,14 @@ body {
 
 .nav-tabs {
   display: flex;
-  gap: 0;
-  margin-bottom: 24px;
-  background: var(--sv-card);
-  border: 1px solid var(--sv-border-gold);
-  border-radius: 3px;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(245, 200, 74, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  gap: 4px;
+  margin-bottom: 26px;
+  background: var(--pink-light);
+  border: none;
+  border-radius: 999px;
+  padding: 4px;
+  box-shadow: var(--shadow-sm);
+  overflow: visible;
 }
 
 .nav-tab {
@@ -119,55 +129,35 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 4px;
-  color: var(--sv-text-mid);
+  padding: 9px 6px;
+  color: var(--pink-deep);
   text-decoration: none;
-  font-family: 'Cinzel', 'Hiragino Kaku Gothic ProN', serif;
-  font-size: 0.72rem;
+  font-family: 'Fredoka', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  border-right: 1px solid var(--sv-border);
-  transition: color 180ms ease, background 180ms ease, text-shadow 180ms ease;
+  letter-spacing: 0.02em;
+  border-radius: 999px;
+  transition: all 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
 }
 
-.nav-tab:last-child {
-  border-right: none;
-}
-
 .nav-tab::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--sv-gold-bright), transparent);
-  box-shadow: 0 0 8px var(--sv-gold-glow);
-  transition: width 200ms ease;
+  display: none;
 }
 
-.nav-tab:hover {
-  color: var(--sv-text);
-  background: rgba(200, 144, 30, 0.07);
-}
-
-.nav-tab:hover::after {
-  width: 55%;
+.nav-tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--pink-deep);
+  transform: scale(1.04);
 }
 
 .nav-tab.active {
-  color: var(--sv-gold-bright);
-  background: linear-gradient(180deg, rgba(200, 144, 30, 0.12) 0%, rgba(200, 144, 30, 0.04) 100%);
-  text-shadow: 0 0 10px var(--sv-gold-glow);
+  background: var(--pink-deep);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(245, 96, 122, 0.38);
+  transform: scale(1.03);
 }
 
-.nav-tab.active::after {
-  width: 100%;
-}
-
-/* Legacy nav-row (fallback) */
 .nav-row {
   display: flex;
   gap: 8px;
@@ -176,18 +166,18 @@ body {
 }
 
 .nav-row a {
-  color: var(--sv-text-mid);
+  color: var(--pink-deep);
   text-decoration: none;
-  padding: 6px 12px;
-  border: 1px solid var(--sv-border);
-  border-radius: 3px;
-  font-size: 0.8rem;
-  transition: color 180ms ease, border-color 180ms ease;
+  padding: 6px 14px;
+  border: 2px solid var(--pink-light);
+  border-radius: 999px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.82rem;
+  transition: all 180ms ease;
 }
 
 .nav-row a:hover {
-  color: var(--sv-gold-bright);
-  border-color: var(--sv-border-gold);
+  background: var(--pink-light);
 }
 
 /* =====================================================
@@ -195,54 +185,38 @@ body {
    ===================================================== */
 
 .card {
-  background: var(--sv-card);
-  border: 1px solid var(--sv-border-gold);
-  border-radius: 4px;
-  padding: 16px 18px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-soft);
+  border-radius: 22px;
+  padding: 18px 22px;
   margin-bottom: 14px;
   position: relative;
-  box-shadow:
-    inset 0 0 40px rgba(74, 29, 144, 0.06),
-    0 0 24px rgba(245, 200, 74, 0.06);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 220ms ease, transform 220ms ease;
 }
 
-/* Corner ornaments */
+.card:hover {
+  box-shadow: var(--shadow-pink);
+  transform: translateY(-2px);
+}
+
 .card::before,
 .card::after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-color: var(--sv-gold);
-  border-style: solid;
-  pointer-events: none;
-}
-
-.card::before {
-  top: -1px;
-  left: -1px;
-  border-width: 2px 0 0 2px;
-}
-
-.card::after {
-  bottom: -1px;
-  right: -1px;
-  border-width: 0 2px 2px 0;
+  display: none;
 }
 
 .card h3 {
-  margin: 0 0 10px;
-  font-family: 'Cinzel', 'Hiragino Kaku Gothic ProN', serif;
-  font-size: 0.9rem;
+  margin: 0 0 12px;
+  font-family: 'Fredoka', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 1rem;
   font-weight: 700;
-  color: var(--sv-gold-mid);
-  letter-spacing: 0.06em;
-  text-shadow: 0 0 10px rgba(232, 176, 64, 0.3);
+  letter-spacing: 0.02em;
+  color: var(--pink-deep);
 }
 
 .card p {
   margin: 0 0 8px;
-  color: var(--sv-text);
+  color: var(--text);
   font-size: 0.95rem;
 }
 
@@ -256,70 +230,71 @@ button {
   justify-content: center;
   gap: 6px;
   cursor: pointer;
-  padding: 10px 22px;
+  padding: 10px 24px;
   width: auto;
   max-width: none;
   margin: 0;
-  font-family: 'Cinzel', 'Hiragino Kaku Gothic ProN', serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--sv-gold);
-  background: linear-gradient(160deg, #130e28 0%, #07050f 100%);
-  border: 1px solid var(--sv-border-gold);
-  border-radius: 3px;
+  font-family: 'Fredoka', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: linear-gradient(130deg, var(--pink) 0%, var(--pink-deep) 100%);
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(255, 155, 181, 0.4);
   position: relative;
   overflow: hidden;
-  transition: color 200ms ease, border-color 200ms ease, box-shadow 200ms ease, transform 120ms ease;
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 220ms ease;
 }
 
 button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, var(--sv-gold-glow2) 0%, transparent 55%);
-  opacity: 0;
-  transition: opacity 200ms ease;
+  display: none;
 }
 
 button:hover {
-  color: var(--sv-gold-bright);
-  border-color: var(--sv-gold);
-  box-shadow: 0 0 14px var(--sv-gold-glow), inset 0 0 10px rgba(245, 200, 74, 0.04);
-  transform: translateY(-1px);
-}
-
-button:hover::before {
-  opacity: 1;
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 7px 20px rgba(255, 155, 181, 0.5);
 }
 
 button:active {
-  transform: translateY(0);
-  box-shadow: 0 0 6px var(--sv-gold-glow);
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(255, 155, 181, 0.3);
 }
 
 button:focus-visible {
-  outline: 2px solid var(--sv-gold);
+  outline: 3px solid var(--pink-light);
   outline-offset: 2px;
 }
 
-button.selected {
-  color: var(--sv-gold-bright);
-  border-color: var(--sv-gold-bright);
-  background: linear-gradient(160deg, #241a40 0%, #130e28 100%);
-  box-shadow: 0 0 18px var(--sv-gold-glow);
+button.selected,
+button.active {
+  background: linear-gradient(130deg, var(--blue) 0%, var(--blue-deep) 100%);
+  box-shadow: 0 4px 14px rgba(109, 200, 232, 0.45);
 }
 
-button.sv-primary {
-  background: linear-gradient(160deg, #2a1060 0%, #14083a 100%);
-  border-color: var(--sv-purple-mid);
-  color: #c4a8f8;
+.button-row button:nth-child(2) {
+  background: linear-gradient(130deg, var(--orange) 0%, var(--orange-deep) 100%);
+  box-shadow: 0 4px 14px rgba(255, 155, 106, 0.4);
 }
 
-button.sv-primary:hover {
-  color: #e0d0ff;
-  border-color: #a070ff;
-  box-shadow: 0 0 16px rgba(124, 58, 237, 0.45);
+.button-row button:nth-child(2):hover {
+  box-shadow: 0 7px 20px rgba(255, 155, 106, 0.5);
+}
+
+.button-row button:nth-child(3) {
+  background: linear-gradient(130deg, var(--blue) 0%, var(--blue-deep) 100%);
+  box-shadow: 0 4px 14px rgba(109, 200, 232, 0.4);
+}
+
+.button-row button:nth-child(3):hover {
+  box-shadow: 0 7px 20px rgba(109, 200, 232, 0.5);
+}
+
+.button-row button:nth-child(4) {
+  background: linear-gradient(130deg, var(--mint) 0%, #4DC88A 100%);
+  box-shadow: 0 4px 14px rgba(125, 232, 176, 0.4);
 }
 
 /* =====================================================
@@ -331,7 +306,7 @@ button.sv-primary:hover {
   gap: 10px;
   flex-wrap: wrap;
   margin-bottom: 16px;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 /* =====================================================
@@ -340,11 +315,11 @@ button.sv-primary:hover {
 
 label {
   display: block;
-  color: var(--sv-text-mid);
-  font-family: 'Cinzel', 'Hiragino Kaku Gothic ProN', serif;
-  font-size: 0.75rem;
+  color: var(--text-mid);
+  font-family: 'Fredoka', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   margin-bottom: 4px;
 }
 
@@ -356,17 +331,25 @@ select {
   max-width: 480px;
   margin-top: 6px;
   margin-bottom: 14px;
-  padding: 10px 14px;
-  background: rgba(4, 6, 16, 0.85);
-  border: 1px solid var(--sv-border);
-  border-radius: 3px;
-  color: var(--sv-text);
-  font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  padding: 10px 16px;
+  background: rgba(255, 214, 228, 0.18);
+  border: 2px solid rgba(255, 155, 181, 0.28);
+  border-radius: 14px;
+  color: var(--text);
+  font-family: 'Nunito', 'Hiragino Kaku Gothic ProN', sans-serif;
   font-size: 0.95rem;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
-/* チェックボックス・ラジオはインライン表示 */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--pink);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 155, 181, 0.22);
+}
+
 input[type="checkbox"],
 input[type="radio"] {
   display: inline;
@@ -375,6 +358,7 @@ input[type="radio"] {
   margin: 0 6px 0 0;
   padding: 0;
   vertical-align: middle;
+  accent-color: var(--pink-deep);
 }
 
 label:has(input[type="checkbox"]),
@@ -384,14 +368,12 @@ label:has(input[type="radio"]) {
   gap: 6px;
   margin-bottom: 8px;
   cursor: pointer;
+  color: var(--text-mid);
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: var(--sv-border-gold);
-  box-shadow: 0 0 0 2px rgba(200, 144, 30, 0.2);
+label:has(input[type="checkbox"]):hover,
+label:has(input[type="radio"]):hover {
+  color: var(--pink-deep);
 }
 
 /* =====================================================
@@ -403,38 +385,24 @@ select:focus {
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  padding: 24px 20px 20px;
-  background: var(--sv-card);
-  border: 1px solid var(--sv-border-gold);
-  border-radius: 4px;
+  padding: 26px 20px 22px;
+  background: var(--bg-card);
+  border: 2px solid var(--border-soft);
+  border-radius: 24px;
   margin-bottom: 14px;
   position: relative;
-  box-shadow:
-    0 0 30px rgba(245, 200, 74, 0.06),
-    inset 0 0 60px rgba(74, 29, 144, 0.08);
+  box-shadow: var(--shadow-pink);
+  transition: box-shadow 220ms ease, transform 220ms ease;
+}
+
+.radar-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 155, 181, 0.32);
 }
 
 .radar-wrapper::before,
 .radar-wrapper::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-color: var(--sv-gold);
-  border-style: solid;
-  pointer-events: none;
-}
-
-.radar-wrapper::before {
-  top: -1px;
-  left: -1px;
-  border-width: 2px 0 0 2px;
-}
-
-.radar-wrapper::after {
-  bottom: -1px;
-  right: -1px;
-  border-width: 0 2px 2px 0;
+  display: none;
 }
 
 .radar-chart {
@@ -443,15 +411,14 @@ select:focus {
   overflow: visible;
 }
 
-/* Legacy fallback */
 .radar-grid {
   fill: none;
-  stroke: var(--sv-border);
+  stroke: var(--border-soft);
 }
 
 .radar-fill {
-  fill: var(--sv-cyan-dim);
-  stroke: var(--sv-cyan);
+  fill: rgba(255, 155, 181, 0.2);
+  stroke: var(--pink);
   stroke-width: 1.5;
 }
 
@@ -459,14 +426,15 @@ select:focus {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 4px 16px;
   font-size: 0.82rem;
-  color: var(--sv-text-mid);
+  color: var(--text-mid);
+  font-family: 'Nunito', sans-serif;
+  width: 100%;
 }
 
-/* Animated radar elements */
 .sv-ripple {
   transform-box: fill-box;
   transform-origin: center;
@@ -480,7 +448,7 @@ select:focus {
 
 @keyframes svRipple {
   0%   { transform: scale(1); opacity: 0.85; }
-  100% { transform: scale(4); opacity: 0; }
+  100% { transform: scale(4.5); opacity: 0; }
 }
 
 .sv-max-dot {
@@ -490,14 +458,14 @@ select:focus {
 @keyframes svDotPulse {
   0%, 100% {
     filter:
-      drop-shadow(0 0 4px #ffd700)
-      drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+      drop-shadow(0 0 4px #FF9B6A)
+      drop-shadow(0 0 10px rgba(255, 155, 106, 0.5));
   }
   50% {
     filter:
-      drop-shadow(0 0 8px #ffd700)
-      drop-shadow(0 0 22px #ffd700)
-      drop-shadow(0 0 40px rgba(255, 215, 0, 0.4));
+      drop-shadow(0 0 8px #FF9B6A)
+      drop-shadow(0 0 22px #FF9B6A)
+      drop-shadow(0 0 36px rgba(255, 155, 106, 0.35));
   }
 }
 
@@ -506,7 +474,7 @@ select:focus {
    ===================================================== */
 
 .calendar-card {
-  padding: 20px;
+  padding: 22px;
 }
 
 .calendar-header {
@@ -518,19 +486,18 @@ select:focus {
 }
 
 .calendar-header strong {
-  font-family: 'Cinzel', 'Hiragino Kaku Gothic ProN', serif;
-  font-size: 1rem;
-  color: var(--sv-gold-bright);
-  letter-spacing: 0.06em;
-  text-shadow: 0 0 12px var(--sv-gold-glow);
+  font-family: 'Fredoka', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 1.05rem;
+  color: var(--pink-deep);
+  letter-spacing: 0.03em;
 }
 
 .calendar-nav-button {
   width: auto;
-  min-width: 64px;
-  padding: 7px 14px;
+  min-width: 56px;
+  padding: 7px 16px;
   margin: 0;
-  font-size: 0.72rem;
+  font-size: 0.78rem;
 }
 
 .calendar-weekdays {
@@ -542,17 +509,18 @@ select:focus {
 
 .calendar-weekday {
   text-align: center;
-  font-family: 'Cinzel', 'Hiragino Kaku Gothic ProN', serif;
-  font-size: 0.65rem;
-  color: var(--sv-gold-dark);
-  letter-spacing: 0.05em;
+  font-family: 'Fredoka', 'Hiragino Kaku Gothic ProN', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--pink);
   padding: 4px 0;
+  letter-spacing: 0.02em;
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 4px;
+  gap: 5px;
 }
 
 .calendar-day {
@@ -560,71 +528,76 @@ select:focus {
   max-width: none;
   aspect-ratio: 1 / 1;
   margin: 0;
-  border-radius: 3px;
-  border: 1px solid var(--sv-border);
-  background: rgba(9, 15, 34, 0.7);
+  border-radius: 14px;
+  border: 2px solid var(--blue-light);
+  background: #fff;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   padding: 5px;
   position: relative;
-  transition: border-color 140ms ease, box-shadow 140ms ease, background 140ms ease;
+  transition: border-color 150ms ease, box-shadow 150ms ease,
+              background 150ms ease, transform 150ms ease;
 }
 
 .calendar-day.is-other-month {
-  background: rgba(4, 6, 16, 0.4);
-  opacity: 0.35;
+  background: rgba(255, 248, 245, 0.5);
+  border-color: transparent;
+  opacity: 0.45;
 }
 
 .calendar-day.is-current-month {
-  background: rgba(9, 15, 34, 0.85);
+  background: #fff;
 }
 
 .calendar-day:hover,
 .calendar-day:focus-visible {
-  border-color: var(--sv-border-gold);
-  background: rgba(200, 144, 30, 0.08);
-  box-shadow: 0 0 10px rgba(200, 144, 30, 0.2);
+  border-color: var(--blue);
+  background: var(--blue-light);
+  box-shadow: 0 3px 10px rgba(109, 200, 232, 0.3);
+  transform: scale(1.06);
   outline: none;
+  z-index: 1;
 }
 
 .calendar-day.is-today {
-  border-color: var(--sv-cyan);
-  box-shadow: 0 0 8px var(--sv-cyan-glow);
+  border-color: var(--pink);
+  background: rgba(255, 155, 181, 0.08);
+  box-shadow: 0 3px 10px rgba(255, 155, 181, 0.3);
 }
 
 .calendar-day-number {
+  font-family: 'Fredoka', sans-serif;
   font-weight: 600;
-  font-size: 0.72rem;
-  color: var(--sv-text-mid);
+  font-size: 0.75rem;
+  color: var(--text-mid);
 }
 
 .calendar-day.is-current-month .calendar-day-number {
-  color: var(--sv-text);
+  color: var(--text);
 }
 
 .calendar-day.is-today .calendar-day-number {
-  color: var(--sv-cyan);
-  text-shadow: 0 0 6px var(--sv-cyan-glow);
+  color: var(--pink-deep);
 }
 
 .calendar-day.has-record .calendar-day-number {
-  color: var(--sv-gold-mid);
+  color: var(--orange-deep);
 }
 
 .calendar-record-dot {
   position: absolute;
   right: 4px;
   bottom: 4px;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 999px;
-  background: var(--sv-gold);
-  box-shadow: 0 0 5px var(--sv-gold-glow);
+  background: var(--orange);
+  box-shadow: 0 0 5px rgba(255, 155, 106, 0.5);
 }
 
 .calendar-day.is-other-month .calendar-record-dot {
-  background: var(--sv-gold-dark);
+  background: var(--orange-light);
   box-shadow: none;
 }
 
@@ -636,24 +609,24 @@ select:focus {
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--sv-border);
-  border-radius: 3px;
-  background: rgba(9, 15, 34, 0.6);
-  transition: border-color 150ms ease;
+  padding: 12px 16px;
+  border: 2px solid var(--border-blue);
+  border-radius: 16px;
+  background: #fff;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
 .history-item:hover {
-  border-color: var(--sv-border-gold);
+  border-color: var(--blue);
+  box-shadow: var(--shadow-blue);
 }
 
-/* Scrollbar (Webkit) */
 ::-webkit-scrollbar {
   width: 6px;
-  background: var(--sv-deep);
+  background: var(--pink-light);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--sv-border-gold);
-  border-radius: 3px;
+  background: var(--pink);
+  border-radius: 999px;
 }
