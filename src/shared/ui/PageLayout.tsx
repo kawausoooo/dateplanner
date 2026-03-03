@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 interface PageLayoutProps extends PropsWithChildren {
   title: string;
   showNav?: boolean;
+  showTitle?: boolean;
 }
 
 type NavItem = { to: string; label: string; exact?: boolean };
@@ -16,7 +17,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/help",     label: "ヘルプ" },
 ];
 
-export const PageLayout = ({ title, children, showNav = true }: PageLayoutProps): JSX.Element => {
+export const PageLayout = ({ title, children, showNav = true, showTitle = true }: PageLayoutProps): JSX.Element => {
   const { pathname } = useLocation();
 
   const isActive = (to: string, exact?: boolean): boolean => {
@@ -26,9 +27,11 @@ export const PageLayout = ({ title, children, showNav = true }: PageLayoutProps)
 
   return (
     <main className="page">
-      <header className="page-header">
-        <h1>{title}</h1>
-      </header>
+      {showTitle && (
+        <header className="page-header">
+          <h1>{title}</h1>
+        </header>
+      )}
 
       {showNav && (
         <nav className="nav-tabs" aria-label="メインナビゲーション">
