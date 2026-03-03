@@ -7,7 +7,9 @@ import { DateImportancePage } from "../../features/date-entry/DateImportancePage
 import { HistoryCalendarPage } from "../../features/history-calendar/HistoryCalendarPage";
 import { SettingsPage } from "../../features/settings/SettingsPage";
 import { HelpPage } from "../../features/help/HelpPage";
+import { TitlePage } from "../../features/title/TitlePage";
 import { useAppContext } from "../providers/AppProvider";
+
 
 const RequirePerson = ({ children }: { children: JSX.Element }): JSX.Element => {
   const { selectedPersonId, isLoaded } = useAppContext();
@@ -26,9 +28,10 @@ const RequirePerson = ({ children }: { children: JSX.Element }): JSX.Element => 
 export const AppRouter = (): JSX.Element => {
   return (
     <Routes>
+      <Route path="/" element={<TitlePage />} />
       <Route path="/people" element={<PersonSelectorPage />} />
       <Route
-        path="/"
+        path="/main"
         element={
           <RequirePerson>
             <DashboardPage />
