@@ -1,64 +1,93 @@
 import { useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppContext } from "../../app/providers/AppProvider";
 import { PageLayout } from "../../shared/ui/PageLayout";
 
+type EntryDraft = {
+  date: string;
+  memo: string;
+  satisfactions: Record<string, number>;
+};
+
+const hasSelectedDate = (value: unknown): value is { date: string } => {
+  if (!value || typeof value !== "object") {
+    return false;
+  }
+
+  const candidate = value as { date?: unknown };
+  return typeof candidate.date === "string";
+};
+
 export const DateEntryPage = (): JSX.Element => {
   const navigate = useNavigate();
-  const { settings, addDateEvent } = useAppContext();
+  const location = useLocation();
+  const { settings } = useAppContext();
   const enabledCategories = useMemo(() => settings.categories.filter((c) => c.enabled), [settings.categories]);
   const [memo, setMemo] = useState("");
 
-  const [values, setValues] = useState<Record<string, { importance: number; satisfaction: number }>>(() => {
-    return Object.fromEntries(enabledCategories.map((category) => [category.id, { importance: 5, satisfaction: 50 }]));
+  // 入力中は string で保持することで、空欄や途中入力を許容する
+  const [satisfactions, setSatisfactions] = useState<Record<string, string>>(() => {
+    return Object.fromEntries(enabledCategories.map((category) => [category.id, "50"]));
   });
 
-  const onChange = (categoryId: string, key: "importance" | "satisfaction", value: number): void => {
-    setValues((prev) => ({
-      ...prev,
-      [categoryId]: {
-        ...(prev[categoryId] ?? { importance: 5, satisfaction: 50 }),
-        [key]: value,
-      },
-    }));
+  const onChangeSatisfaction = (categoryId: string, raw: string): void => {
+    // 空欄は許容し、100 超は即座に上限値へ丸める
+    const value = raw !== "" && Number(raw) > 100 ? "100" : raw;
+    setSatisfactions((prev) => ({ ...prev, [categoryId]: value }));
   };
 
-  const handleSave = async (): Promise<void> => {
-    await addDateEvent({
+  const handleOk = (): void => {
+    if (!selectedDate) {
+      navigate("/entry", { replace: true });
+      return;
+    }
+
+    // 保存時のみ数値に変換・クランプ（空欄は 1 扱い）
+    const numericSatisfactions = Object.fromEntries(
+      Object.entries(satisfactions).map(([id, raw]) => [
+        id,
+        Math.max(1, Math.min(100, Number(raw) || 1)),
+      ]),
+    );
+
+    const draft: EntryDraft = {
+      date: selectedDate,
       memo,
-      scores: enabledCategories.map((category) => ({
-        categoryId: category.id,
-        importance: Math.max(1, Math.min(10, values[category.id]?.importance ?? 5)) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10,
-        satisfaction: Math.max(1, Math.min(100, values[category.id]?.satisfaction ?? 50)),
-      })),
-    });
+      satisfactions: numericSatisfactions,
+    };
 
-    navigate("/main");
+    navigate("/entry/importance", { state: draft });
   };
+
+  const selectedDate = hasSelectedDate(location.state) ? location.state.date : null;
+
+  if (!selectedDate) {
+    return (
+      <PageLayout title="満足度入力">
+        <div className="card">
+          <p>先にカレンダーから日付を選択してください。</p>
+        </div>
+        <button onClick={() => navigate("/entry", { replace: true })}>日付選択に戻る</button>
+      </PageLayout>
+    );
+  }
 
   return (
-    <PageLayout title="点数入力">
+    <PageLayout title="満足度入力">
+      <div className="card">
+        <p>選択日: {selectedDate}</p>
+      </div>
       {enabledCategories.map((category) => (
         <div className="card" key={category.id}>
           <h3>{category.label}</h3>
-          <label>
-            重要度 (1-10)
-            <input
-              type="number"
-              min={1}
-              max={10}
-              value={values[category.id]?.importance ?? 5}
-              onChange={(e) => onChange(category.id, "importance", Number(e.target.value))}
-            />
-          </label>
           <label>
             満足度 (1-100)
             <input
               type="number"
               min={1}
               max={100}
-              value={values[category.id]?.satisfaction ?? 50}
-              onChange={(e) => onChange(category.id, "satisfaction", Number(e.target.value))}
+              value={satisfactions[category.id] ?? 50}
+              onChange={(e) => onChangeSatisfaction(category.id, e.target.value)}
             />
           </label>
         </div>
@@ -67,7 +96,10 @@ export const DateEntryPage = (): JSX.Element => {
         メモ
         <textarea value={memo} onChange={(e) => setMemo(e.target.value)} />
       </label>
-      <button onClick={handleSave}>保存</button>
+      <div className="button-row">
+        <button onClick={() => navigate("/entry")}>日付を選び直す</button>
+        <button onClick={handleOk}>OK</button>
+      </div>
     </PageLayout>
   );
 };
